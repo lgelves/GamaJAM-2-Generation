@@ -24,7 +24,8 @@ public class PerspectiveController : MonoBehaviour
     [Tooltip("Assign the action here (e.g., a button) to change the camera")]
     public InputAction inputChangePerspective;
 
-    private bool in2DView = false;
+    // CAMBIO 1: Ahora el juego empieza asumiendo que estamos en 2D
+    private bool in2DView = true;
 
     private void OnEnable()
     {
@@ -46,11 +47,12 @@ public class PerspectiveController : MonoBehaviour
 
     private void Start()
     {
-        // Initial state: 3D active
-        camIsometric.Priority = 10;
-        cam2DLateral.Priority = 5;
+        // CAMBIO 2: Estado inicial: 2D activo (Cámara 2D toma el control)
+        cam2DLateral.Priority = 10;
+        camIsometric.Priority = 5;
 
-        Activate3DMode();
+        // CAMBIO 3: Activamos directamente la lógica y el script 2D
+        Activate2DMode();
     }
 
     private void ChangeView(InputAction.CallbackContext context)
@@ -98,4 +100,12 @@ public class PerspectiveController : MonoBehaviour
             spriteTransform.localRotation = Quaternion.Euler(rotationFor2D);
         }
     }
+    public void Force2DMode()
+    {
+        in2DView = true;
+        cam2DLateral.Priority = 10;
+        camIsometric.Priority = 5;
+        Activate2DMode();
+    }
+
 }

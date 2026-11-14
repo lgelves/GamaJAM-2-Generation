@@ -9,14 +9,19 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance { get; private set; }
 
     [Header("Main Menu UI")]
-    public GameObject mainMenuPanel;
+    public GameObject mainMenuPanel; // El Canvas/Panel global del menú
     [Tooltip("Cámara que apunta a la zona bonita del nivel para el menú")]
     public CinemachineCamera mainMenuCamera;
+
+    [Header("Sub-Menús (Contenedores)")]
+    public GameObject mainMenuButtonsContainer; // Contiene Play, Opciones, Créditos, etc.
+    public GameObject optionsContainer;         // Contiene los Sliders de audio
+    public GameObject creditsContainer;         // Contiene el texto de créditos
 
     [Header("Death Screen UI")]
     public GameObject deathScreenUI;
     public float fadeDuration = 1f;
-    private Coroutine deathFadeCoroutine; // Control para evitar conflictos de corrutinas
+    private Coroutine deathFadeCoroutine;
 
     [Header("Pause Menu UI")]
     public GameObject pauseMenuPanel;
@@ -52,11 +57,36 @@ public class UIManager : MonoBehaviour
         if (mainMenuPanel != null)
         {
             mainMenuPanel.SetActive(true);
+            ShowMainMenuButtons(); // Asegura que al iniciar se vean los botones principales
             if (mainMenuCamera != null) mainMenuCamera.Priority = 20;
         }
     }
 
-    // --- LÓGICA DEL MENÚ PRINCIPAL ---
+    // --- LÓGICA DE NAVEGACIÓN DEL MENÚ PRINCIPAL ---
+
+    public void ShowMainMenuButtons()
+    {
+        // Esta función sirve para el menú inicial y para el botón "Volver" desde Opciones o Créditos
+        if (mainMenuButtonsContainer != null) mainMenuButtonsContainer.SetActive(true);
+        if (optionsContainer != null) optionsContainer.SetActive(false);
+        if (creditsContainer != null) creditsContainer.SetActive(false);
+    }
+
+    public void ShowOptions()
+    {
+        if (mainMenuButtonsContainer != null) mainMenuButtonsContainer.SetActive(false);
+        if (optionsContainer != null) optionsContainer.SetActive(true);
+        if (creditsContainer != null) creditsContainer.SetActive(false);
+    }
+
+    public void ShowCredits()
+    {
+        if (mainMenuButtonsContainer != null) mainMenuButtonsContainer.SetActive(false);
+        if (optionsContainer != null) optionsContainer.SetActive(false);
+        if (creditsContainer != null) creditsContainer.SetActive(true);
+    }
+
+    // --- LÓGICA DE ESTADOS DEL JUEGO ---
 
     public void StartGame()
     {
@@ -88,6 +118,7 @@ public class UIManager : MonoBehaviour
 
         if (mainMenuPanel != null)
         {
+            ShowMainMenuButtons(); // Resetea la vista para que no se quede abierto Opciones
             StartCoroutine(FadeUI(mainMenuPanel, 0f, 1f, fadeDuration));
         }
 
@@ -97,7 +128,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // --- LÓGICA DE MUERTE (Con protección de interrupciones) ---
+    // --- LÓGICA DE MUERTE ---
 
     public void ShowDeathScreen()
     {
@@ -164,7 +195,7 @@ public class UIManager : MonoBehaviour
         float elapsed = 0f;
         while (elapsed < duration)
         {
-            elapsed += Time.unscaledDeltaTime;
+            elapsed += Time.unscaledDeltaTime; // unscaled para que funcione aunque el juego esté pausado
             cg.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / duration);
             yield return null;
         }
