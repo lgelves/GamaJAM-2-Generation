@@ -166,8 +166,10 @@ public class UIManager : MonoBehaviour
 
     public void TogglePause()
     {
+        // NUEVO: Añadida la comprobación de DialogueManager.Instance.IsDialogueActive
         if ((mainMenuPanel != null && mainMenuPanel.activeSelf) ||
-            (deathScreenUI != null && deathScreenUI.activeSelf)) return;
+            (deathScreenUI != null && deathScreenUI.activeSelf) ||
+            (DialogueManager.Instance != null && DialogueManager.Instance.IsDialogueActive)) return;
 
         isPaused = !isPaused;
         if (pauseMenuPanel != null) pauseMenuPanel.SetActive(isPaused);

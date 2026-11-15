@@ -107,5 +107,11 @@ public class PerspectiveController : MonoBehaviour
         camIsometric.Priority = 5;
         Activate2DMode();
     }
-
+    public void Force3DMode()
+    {
+        in2DView = false;
+        camIsometric.Priority = 10;
+        cam2DLateral.Priority = 5;
+        Activate3DMode();
+    }
 }
