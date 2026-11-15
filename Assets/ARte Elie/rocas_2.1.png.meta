@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: 9fa21ea8c3a8f544a8661b3ec56803af
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 7928843077620370348
+    second: rocas_2.1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -108,7 +111,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: rocas_2.1_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1144
+        height: 1292
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cab806135c8e80e60800000000000000
+      internalID: 7928843077620370348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -122,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      rocas_2.1_0: 7928843077620370348
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
