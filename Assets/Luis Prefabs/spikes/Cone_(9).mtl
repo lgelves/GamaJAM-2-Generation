@@ -1,0 +1,5 @@
+newmtl CombatLightStoneBlocks
+map_Kd CombatLightStoneBlocks.png
+Kd 1 1 1
+d 1
+

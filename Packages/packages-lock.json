@@ -63,7 +63,7 @@
       "depth": 0,
       "source": "builtin",
       "dependencies": {
-        "com.unity.probuilder": "6.0.9",
+        "com.unity.probuilder": "6.1.2",
         "com.unity.formats.fbx": "5.1.7",
         "com.unity.terrain-tools": "5.3.3"
       }
@@ -149,7 +149,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.probuilder": {
-      "version": "6.0.9",
+      "version": "6.1.2",
       "depth": 1,
       "source": "registry",
       "dependencies": {
