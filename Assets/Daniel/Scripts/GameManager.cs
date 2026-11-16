@@ -13,8 +13,15 @@ public class GameManager : MonoBehaviour
     [Tooltip("Tiempo de invulnerabilidad al reaparecer (segundos)")]
     public float invincibilityTime = 1.5f;
 
+    [Header("Death VFX")]
+    [Tooltip("El prefab del sistema de partículas de explosión")]
+    public ParticleSystem explosionPrefab;
+    public float shrinkDuration = 0.3f;
+
     private Vector3 initialSpawnPosition;
+    private Vector3 originalPlayerScale = Vector3.one; // Guardamos la escala original para el respawn
     private bool isInvincible = false;
+    private bool isDying = false; // Evita que la secuencia de muerte se active dos veces seguidas
 
     private void Awake()
     {
@@ -28,6 +35,7 @@ public class GameManager : MonoBehaviour
         {
             initialSpawnPosition = player.transform.position;
             currentRespawnPosition = initialSpawnPosition;
+            originalPlayerScale = player.transform.localScale; // Guardamos el tamaño inicial
         }
     }
 
@@ -36,7 +44,7 @@ public class GameManager : MonoBehaviour
         currentRespawnPosition = newPosition;
         Debug.Log("Player Checkpoint saved at: " + newPosition);
 
-        // Actualizamos la posici�n del enemigo al tocar el checkpoint
+        // Actualizamos la posición del enemigo al tocar el checkpoint
         ChaserEnemy[] allChasers = Object.FindObjectsByType<ChaserEnemy>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (ChaserEnemy chaser in allChasers)
         {
@@ -46,15 +54,53 @@ public class GameManager : MonoBehaviour
 
     public void TriggerPlayerDeath(GameObject deadPlayer)
     {
-        // EL ESCUDO: Si es invencible O ya est� apagado/muerto, ignoramos por completo la petici�n
-        if (isInvincible || !player.activeInHierarchy) return;
+        // EL ESCUDO: Si es invencible, ya está muerto o la secuencia ya inició, ignoramos por completo
+        if (isInvincible || !player.activeInHierarchy || isDying) return;
 
-        player.SetActive(false);
+        isDying = true;
+        StartCoroutine(DeathSequenceCoroutine());
+    }
 
+    private IEnumerator DeathSequenceCoroutine()
+    {
+        // 1. Congelamos al jugador para que no caiga ni se mueva mientras se encoge
+        Rigidbody rb = player.GetComponent<Rigidbody>();
+        if (rb != null) rb.linearVelocity = Vector3.zero;
+
+        Vector3 startScale = player.transform.localScale;
+        Vector3 targetScale = Vector3.zero;
+        float elapsed = 0f;
+
+        // FASE 1: Encogimiento (Implosión)
+        while (elapsed < shrinkDuration)
+        {
+            elapsed += Time.deltaTime;
+            player.transform.localScale = Vector3.Lerp(startScale, targetScale, elapsed / shrinkDuration);
+            yield return null;
+        }
+        player.transform.localScale = targetScale;
+
+        // FASE 2: Explosión (VFX)
+        if (explosionPrefab != null)
+        {
+            ParticleSystem vfx = Instantiate(explosionPrefab, player.transform.position, Quaternion.identity);
+            vfx.Play();
+            Destroy(vfx.gameObject, vfx.main.duration + vfx.main.startLifetime.constantMax);
+        }
+
+        // FASE 3: Sonido de Muerte
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayPlayerSFX(SoundType.PlayerHurt);
+        }
+
+        // FASE 4: UI de Muerte y apagado
         if (UIManager.Instance != null)
         {
             UIManager.Instance.ShowDeathScreen();
         }
+
+        player.SetActive(false);
     }
 
     public void RespawnPlayer()
@@ -64,11 +110,13 @@ public class GameManager : MonoBehaviour
             ResetAllEnemies();
 
             player.transform.position = currentRespawnPosition;
+            player.transform.localScale = originalPlayerScale; // REINICIAMOS EL TAMAÑO
             player.SetActive(true);
 
             Rigidbody rb = player.GetComponent<Rigidbody>();
             if (rb != null) rb.linearVelocity = Vector3.zero;
 
+            isDying = false; // Liberamos el candado de muerte
             StartCoroutine(InvincibilityTimer());
         }
     }
@@ -79,18 +127,19 @@ public class GameManager : MonoBehaviour
         {
             ResetAllEnemies();
 
-            // --- NUEVO: Forzar perspectiva 2D al reiniciar desde el men� ---
+            // Forzar perspectiva 2D al reiniciar desde el menú
             PerspectiveController pc = Object.FindFirstObjectByType<PerspectiveController>();
             if (pc != null) pc.Force2DMode();
-            // --------------------------------------------------------------
 
             currentRespawnPosition = initialSpawnPosition;
             player.transform.position = initialSpawnPosition;
+            player.transform.localScale = originalPlayerScale; // REINICIAMOS EL TAMAÑO
             player.SetActive(true);
 
             Rigidbody rb = player.GetComponent<Rigidbody>();
             if (rb != null) rb.linearVelocity = Vector3.zero;
 
+            isDying = false; // Liberamos el candado de muerte
             StartCoroutine(InvincibilityTimer());
         }
     }

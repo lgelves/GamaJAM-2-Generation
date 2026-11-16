@@ -19,14 +19,13 @@ public class PortalTrigger : MonoBehaviour
 
     private void TriggerWinSequence()
     {
-        // Usamos las funciones que acabamos de crear en tu UIManager
+        // Llamamos a la secuencia completa de victoria
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowCredits();
+            UIManager.Instance.ShowWinCredits();
         }
 
-        // Ocultamos al jugador para que no quede estorbando en la pantalla
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null) player.SetActive(false);
+        // (Opcional) Desaparecemos el portal después de usarlo
+        gameObject.SetActive(false);
     }
 }

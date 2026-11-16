@@ -83,14 +83,20 @@ public class MovementController2D : MonoBehaviour
         // 1. Calculamos si estamos en el suelo en este frame
         CheckGroundedStatus();
 
-        // 2. AÑADIDO: Comprobamos si acabamos de aterrizar
+        // 2. Comprobamos si acabamos de aterrizar
         if (!wasGrounded && isGrounded)
         {
             if (dustParticles != null) dustParticles.Play();
+
+            // AÑADIDO: Sonido de aterrizaje
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlayPlayerSFX(SoundType.PlayerLand);
+            }
         }
 
         // 3. Guardamos el estado actual para compararlo en el siguiente frame
-        // AÑADIDO: El rastro solo emite si estamos en el suelo y moviéndonos
+        // El rastro solo emite si estamos en el suelo y moviéndonos
         if (slimeTrail != null)
         {
             slimeTrail.emitting = isGrounded;
@@ -108,7 +114,14 @@ public class MovementController2D : MonoBehaviour
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
+            // AÑADIDO: Emitimos polvo justo en el instante que aplicamos la fuerza de salto
+            if (dustParticles != null) dustParticles.Play();
 
+            // AÑADIDO: Sonido de salto
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlayPlayerSFX(SoundType.PlayerJump);
+            }
 
             wantsToJump = false;
         }

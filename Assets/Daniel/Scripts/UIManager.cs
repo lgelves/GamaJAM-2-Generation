@@ -8,6 +8,10 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
+    [Header("Player Management")]
+    [Tooltip("Arrastra aquí al GameObject de tu Slime/Jugador")]
+    public GameObject playerObject;
+
     [Header("Main Menu UI")]
     public GameObject mainMenuPanel; // El Canvas/Panel global del menú
     [Tooltip("Cámara que apunta a la zona bonita del nivel para el menú")]
@@ -60,13 +64,15 @@ public class UIManager : MonoBehaviour
             ShowMainMenuButtons(); // Asegura que al iniciar se vean los botones principales
             if (mainMenuCamera != null) mainMenuCamera.Priority = 20;
         }
+
+        // AÑADIDO: Apagamos al jugador mientras vemos el menú
+        if (playerObject != null) playerObject.SetActive(false);
     }
 
     // --- LÓGICA DE NAVEGACIÓN DEL MENÚ PRINCIPAL ---
 
     public void ShowMainMenuButtons()
     {
-        // Esta función sirve para el menú inicial y para el botón "Volver" desde Opciones o Créditos
         if (mainMenuButtonsContainer != null) mainMenuButtonsContainer.SetActive(true);
         if (optionsContainer != null) optionsContainer.SetActive(false);
         if (creditsContainer != null) creditsContainer.SetActive(false);
@@ -92,6 +98,9 @@ public class UIManager : MonoBehaviour
     {
         Time.timeScale = 1f;
 
+        // AÑADIDO: Prendemos al jugador para poder controlarlo
+        if (playerObject != null) playerObject.SetActive(true);
+
         if (GameManager.Instance != null)
         {
             GameManager.Instance.FullGameReset();
@@ -113,6 +122,9 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 1f;
         isPaused = false;
 
+        // AÑADIDO: Lo apagamos de nuevo al volver al menú
+        if (playerObject != null) playerObject.SetActive(false);
+
         if (pauseMenuPanel != null) pauseMenuPanel.SetActive(false);
         if (deathScreenUI != null) deathScreenUI.SetActive(false);
 
@@ -126,6 +138,46 @@ public class UIManager : MonoBehaviour
         {
             mainMenuCamera.Priority = 20;
         }
+    }
+
+    // --- LÓGICA DE VICTORIA ---
+    public void ShowWinCredits()
+    {
+        Time.timeScale = 1f;
+        isPaused = false;
+
+        // Ocultamos al jugador y otros menús
+        if (playerObject != null) playerObject.SetActive(false);
+        if (pauseMenuPanel != null) pauseMenuPanel.SetActive(false);
+        if (deathScreenUI != null) deathScreenUI.SetActive(false);
+
+        // Encendemos el panel principal, pero forzamos a que muestre los Créditos
+        if (mainMenuPanel != null)
+        {
+            if (mainMenuButtonsContainer != null) mainMenuButtonsContainer.SetActive(false);
+            if (optionsContainer != null) optionsContainer.SetActive(false);
+            if (creditsContainer != null) creditsContainer.SetActive(true);
+
+            // Aparecemos la pantalla suavemente
+            StartCoroutine(FadeUI(mainMenuPanel, 0f, 1f, fadeDuration));
+        }
+
+        // Hacemos que Cinemachine vuelva a la cámara bonita de fondo
+        if (mainMenuCamera != null)
+        {
+            mainMenuCamera.Priority = 20;
+        }
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Saliendo del juego...");
+        Application.Quit(); // Cierra el juego al exportar la build (PC/Mac/Linux)
+
+#if UNITY_EDITOR
+        // Esta línea detiene el modo Play cuando estás probando dentro del Editor de Unity
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 
     // --- LÓGICA DE MUERTE ---
@@ -166,7 +218,6 @@ public class UIManager : MonoBehaviour
 
     public void TogglePause()
     {
-        // NUEVO: Añadida la comprobación de DialogueManager.Instance.IsDialogueActive
         if ((mainMenuPanel != null && mainMenuPanel.activeSelf) ||
             (deathScreenUI != null && deathScreenUI.activeSelf) ||
             (DialogueManager.Instance != null && DialogueManager.Instance.IsDialogueActive)) return;
@@ -197,7 +248,7 @@ public class UIManager : MonoBehaviour
         float elapsed = 0f;
         while (elapsed < duration)
         {
-            elapsed += Time.unscaledDeltaTime; // unscaled para que funcione aunque el juego esté pausado
+            elapsed += Time.unscaledDeltaTime;
             cg.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / duration);
             yield return null;
         }
@@ -209,15 +260,5 @@ public class UIManager : MonoBehaviour
             cg.blocksRaycasts = false;
             uiObject.SetActive(false);
         }
-    }
-    public void QuitGame()
-    {
-        Debug.Log("Saliendo del juego...");
-        Application.Quit(); // Cierra el juego al exportar la build (PC/Mac/Linux)
-
-#if UNITY_EDITOR
-        // Esta línea detiene el modo Play cuando estás probando dentro del Editor de Unity
-        UnityEditor.EditorApplication.isPlaying = false;
-#endif
     }
 }

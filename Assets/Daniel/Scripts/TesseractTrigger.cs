@@ -2,10 +2,20 @@ using UnityEngine;
 
 public class TesseractTrigger : MonoBehaviour
 {
+    [Header("Configuración Visual")]
+    [Tooltip("Velocidad de rotación en los ejes X, Y, Z. Ej: (0, 50, 0) para rotar sobre sí mismo.")]
+    public Vector3 rotationSpeed = new Vector3(15f, 50f, 15f);
+
     [Header("Configuración del Diálogo")]
     public DialogueLine[] tesseractDialogue;
 
     private bool hasTriggered = false;
+
+    private void Update()
+    {
+        // Rota el objeto continuamente en cada frame
+        transform.Rotate(rotationSpeed * Time.deltaTime);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
