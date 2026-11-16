@@ -8,8 +8,13 @@ public class TriggerChaser : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            chaser.SetActive(true);
-            gameObject.SetActive(false);
+            if (chaser != null)
+            {
+                Debug.Log("el jugador activo el trigger");
+                chaser.SetActive(true);
+            }
+
+
         }
     }
 }

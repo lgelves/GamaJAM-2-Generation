@@ -9,23 +9,36 @@ public class ChaserEnemy : MonoBehaviour
     public Transform playerTarget;
     public float moveSpeed = 4f;
 
-    // Eliminamos la variable pública gamePerspective para desacoplar el código
     private NavMeshAgent agent;
     private Vector3 initialPosition;
-    private bool isIn2D = true; // Control local de la perspectiva
+    private bool initialActiveState; // Recuerda si empezó apagado o prendido
+    private bool isIn2D = true;
+
+    private bool isInitialized = false;
 
     private void Awake()
     {
+        InitializeSetup();
+    }
+
+    private void InitializeSetup()
+    {
+        if (isInitialized) return;
+
+        // Guardamos su posición y estado ANTES de que el GameManager lo mueva accidentalmente
+        initialPosition = transform.position;
+        initialActiveState = gameObject.activeSelf;
+
         agent = GetComponent<NavMeshAgent>();
-        agent.speed = moveSpeed;
+        if (agent != null) agent.speed = moveSpeed;
+
+        isInitialized = true;
     }
 
     private void OnEnable()
     {
-        // 1. Nos suscribimos al grito global de cambio de perspectiva
         PerspectiveController.OnPerspectiveChanged += HandlePerspectiveChange;
 
-        // 2. Usamos el nuevo Getter seguro que acabas de crear para saber el estado inicial
         PerspectiveController pc = Object.FindFirstObjectByType<PerspectiveController>();
         if (pc != null)
         {
@@ -40,7 +53,7 @@ public class ChaserEnemy : MonoBehaviour
 
     private void Start()
     {
-        initialPosition = transform.position;
+        // Ya no usamos Start para esto. Todo se asegura en InitializeSetup.
     }
 
     private void HandlePerspectiveChange(bool is2DView)
@@ -50,6 +63,10 @@ public class ChaserEnemy : MonoBehaviour
 
     public void ResetChaser()
     {
+        // 1. Nos aseguramos de que haya guardado su posición original por si estaba apagado
+        InitializeSetup();
+
+        // 2. Lo movemos a su posición de origen
         if (agent != null && agent.isOnNavMesh)
         {
             agent.isStopped = true;
@@ -59,35 +76,39 @@ public class ChaserEnemy : MonoBehaviour
         {
             transform.position = initialPosition;
         }
+
+        // 3. NUEVO: Si el Chaser empezó oculto para el Trigger, lo volvemos a ocultar 
+        // para que el jugador pueda volver a activar el Trigger al morir.
+        if (gameObject.activeSelf != initialActiveState)
+        {
+            gameObject.SetActive(initialActiveState);
+        }
     }
 
     public void UpdateResetPosition()
     {
         initialPosition = transform.position;
+        // Si el jugador tocó un checkpoint, asumimos que el estado base del chaser ahora es estar activo
+        initialActiveState = true;
     }
 
     private void Update()
     {
-        // 1. Verificamos si el Menú Principal está abierto
         bool isMainMenuActive = UIManager.Instance != null &&
                                 UIManager.Instance.mainMenuPanel != null &&
                                 UIManager.Instance.mainMenuPanel.activeSelf;
 
-        // 2. NUEVO: Verificamos si hay un diálogo activo (El Cubo o el Portal Final)
         bool isDialogueActive = DialogueManager.Instance != null &&
                                 DialogueManager.Instance.IsDialogueActive;
 
-        // ESTADO DE ESPERA ABSOLUTA (Si el jugador muere, está en el menú, o está leyendo un diálogo)
         if (playerTarget == null || !playerTarget.gameObject.activeInHierarchy || isMainMenuActive || isDialogueActive)
         {
             StopAgent();
             return;
         }
 
-        // ESTADO DE JUEGO
         if (!isIn2D)
         {
-            // En 3D: Perseguir ferozmente
             if (agent.isOnNavMesh && agent.isStopped)
             {
                 agent.isStopped = false;
@@ -96,12 +117,10 @@ public class ChaserEnemy : MonoBehaviour
         }
         else
         {
-            // En 2D: Congelarse como estatua
             StopAgent();
         }
     }
 
-    // Función auxiliar para detener al agente de forma limpia y evitar bugs de físicas
     private void StopAgent()
     {
         if (agent != null && agent.isOnNavMesh && !agent.isStopped)
