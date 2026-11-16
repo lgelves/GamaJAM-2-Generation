@@ -22,6 +22,7 @@ public class Checkpoint : MonoBehaviour
 
             // Le enviamos la posición al GameManager
             GameManager.Instance.SetCheckpoint(safePosition);
+            
         }
     }
 }
