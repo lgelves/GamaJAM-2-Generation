@@ -10,7 +10,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Main Menu UI")]
     public GameObject mainMenuPanel;
-    [Tooltip("Cámara que apunta a la zona bonita del nivel para el menú")]
+    [Tooltip("Cï¿½mara que apunta a la zona bonita del nivel para el menï¿½")]
     public CinemachineCamera mainMenuCamera;
 
     [Header("Death Screen UI")]
@@ -56,7 +56,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // --- LÓGICA DEL MENÚ PRINCIPAL ---
+    // --- Lï¿½GICA DEL MENï¿½ PRINCIPAL ---
 
     public void StartGame()
     {
@@ -97,7 +97,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // --- LÓGICA DE MUERTE (Con protección de interrupciones) ---
+    // --- Lï¿½GICA DE MUERTE (Con protecciï¿½n de interrupciones) ---
 
     public void ShowDeathScreen()
     {
@@ -131,7 +131,7 @@ public class UIManager : MonoBehaviour
         if (GameManager.Instance != null) GameManager.Instance.RespawnPlayer();
     }
 
-    // --- LÓGICA DE PAUSA ---
+    // --- Lï¿½GICA DE PAUSA ---
 
     public void TogglePause()
     {

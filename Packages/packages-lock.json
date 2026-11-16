@@ -73,7 +73,7 @@
       "depth": 0,
       "source": "builtin",
       "dependencies": {
-        "com.unity.probuilder": "6.0.9",
+        "com.unity.probuilder": "6.1.4",
         "com.unity.formats.fbx": "5.1.7",
         "com.unity.terrain-tools": "5.3.3"
       }
@@ -226,7 +226,7 @@
       }
     },
     "com.unity.splines": {
-      "version": "2.8.3",
+      "version": "2.9.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {
