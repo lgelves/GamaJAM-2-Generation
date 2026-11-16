@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
         currentRespawnPosition = newPosition;
         Debug.Log("Player Checkpoint saved at: " + newPosition);
 
-        // Actualizamos la posición del enemigo al tocar el checkpoint
+        // Actualizamos la posiciï¿½n del enemigo al tocar el checkpoint
         ChaserEnemy[] allChasers = Object.FindObjectsByType<ChaserEnemy>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (ChaserEnemy chaser in allChasers)
         {
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
 
     public void TriggerPlayerDeath(GameObject deadPlayer)
     {
-        // EL ESCUDO: Si es invencible O ya está apagado/muerto, ignoramos por completo la petición
+        // EL ESCUDO: Si es invencible O ya estï¿½ apagado/muerto, ignoramos por completo la peticiï¿½n
         if (isInvincible || !player.activeInHierarchy) return;
 
         player.SetActive(false);
@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
         {
             ResetAllEnemies();
 
-            // --- NUEVO: Forzar perspectiva 2D al reiniciar desde el menú ---
+            // --- NUEVO: Forzar perspectiva 2D al reiniciar desde el menï¿½ ---
             PerspectiveController pc = Object.FindFirstObjectByType<PerspectiveController>();
             if (pc != null) pc.Force2DMode();
             // --------------------------------------------------------------
