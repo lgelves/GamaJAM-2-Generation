@@ -79,6 +79,11 @@ public class GameManager : MonoBehaviour
         {
             ResetAllEnemies();
 
+            // --- NUEVO: Forzar perspectiva 2D al reiniciar desde el menú ---
+            PerspectiveController pc = Object.FindFirstObjectByType<PerspectiveController>();
+            if (pc != null) pc.Force2DMode();
+            // --------------------------------------------------------------
+
             currentRespawnPosition = initialSpawnPosition;
             player.transform.position = initialSpawnPosition;
             player.SetActive(true);
