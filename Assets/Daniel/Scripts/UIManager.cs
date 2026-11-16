@@ -210,4 +210,14 @@ public class UIManager : MonoBehaviour
             uiObject.SetActive(false);
         }
     }
+    public void QuitGame()
+    {
+        Debug.Log("Saliendo del juego...");
+        Application.Quit(); // Cierra el juego al exportar la build (PC/Mac/Linux)
+
+#if UNITY_EDITOR
+        // Esta línea detiene el modo Play cuando estás probando dentro del Editor de Unity
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
 }
