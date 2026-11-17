@@ -11,7 +11,7 @@ public class MovementController2D : MonoBehaviour
     public ParticleSystem dustParticles;
     public TrailRenderer slimeTrail;
 
-    // Necesitamos recordar si en el frame anterior estábamos en el aire para detectar el aterrizaje
+    // Necesitamos recordar si en el frame anterior estï¿½bamos en el aire para detectar el aterrizaje
     private bool wasGrounded = true;
 
     private Rigidbody rb;
@@ -31,7 +31,7 @@ public class MovementController2D : MonoBehaviour
     [Header("Ground Detection (Raycast)")]
     [Tooltip("La capa (Layer) que representa el suelo")]
     public LayerMask groundLayer;
-    [Tooltip("Longitud del rayo. Debe ser un poco más larga que la mitad de la altura de tu personaje")]
+    [Tooltip("Longitud del rayo. Debe ser un poco mï¿½s larga que la mitad de la altura de tu personaje")]
     public float rayLength = 1.1f;
 
     private void Awake()
@@ -88,7 +88,7 @@ public class MovementController2D : MonoBehaviour
         {
             if (dustParticles != null) dustParticles.Play();
 
-            // AÑADIDO: Sonido de aterrizaje
+            // Aï¿½ADIDO: Sonido de aterrizaje
             if (SoundManager.Instance != null)
             {
                 SoundManager.Instance.PlayPlayerSFX(SoundType.PlayerLand);
@@ -96,7 +96,7 @@ public class MovementController2D : MonoBehaviour
         }
 
         // 3. Guardamos el estado actual para compararlo en el siguiente frame
-        // El rastro solo emite si estamos en el suelo y moviéndonos
+        // El rastro solo emite si estamos en el suelo y moviï¿½ndonos
         if (slimeTrail != null)
         {
             slimeTrail.emitting = isGrounded;
@@ -114,10 +114,10 @@ public class MovementController2D : MonoBehaviour
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
-            // AÑADIDO: Emitimos polvo justo en el instante que aplicamos la fuerza de salto
+            // Aï¿½ADIDO: Emitimos polvo justo en el instante que aplicamos la fuerza de salto
             if (dustParticles != null) dustParticles.Play();
 
-            // AÑADIDO: Sonido de salto
+            // Aï¿½ADIDO: Sonido de salto
             if (SoundManager.Instance != null)
             {
                 SoundManager.Instance.PlayPlayerSFX(SoundType.PlayerJump);
@@ -152,6 +152,15 @@ public class MovementController2D : MonoBehaviour
         else if (moveInput.x < -0.01f)
         {
             spriteTransform.localRotation = Quaternion.Euler(0f, 90f, 0f);
+        }
+    }
+    private void OnTriggerEnter(Collider other) // Detectamos colisiones con coleccionables - Luis G
+    {
+        if (other.CompareTag("Player"))
+        {
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.PlaySystemSFX(SoundType.Collectible);
+            gameObject.SetActive(false);
         }
     }
 }

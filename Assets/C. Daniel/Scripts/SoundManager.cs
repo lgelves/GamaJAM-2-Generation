@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
-// 1. Catálogo de sonidos. ¡Añade los nombres de los sonidos que quieras aquí!
+// 1. Catï¿½logo de sonidos. ï¿½Aï¿½ade los nombres de los sonidos que quieras aquï¿½!
 public enum SoundType
 {
     // UI
@@ -17,7 +17,9 @@ public enum SoundType
     PlayerLand,
     PlayerHurt,
     // Enemigos
-    ChaserAlert
+    ChaserAlert,
+    // Coleccionables - Luis G
+    Collectible
 }
 
 // 2. Estructura para poder arrastrar los audios en el Inspector de Unity
@@ -44,7 +46,7 @@ public class SoundManager : MonoBehaviour
     [Header("BGM Settings")]
     public AudioClip mainMenuBGM;
     public AudioClip gameplayBGM;
-    public float fadeDuration = 1f; // Tiempo de transición entre canciones
+    public float fadeDuration = 1f; // Tiempo de transiciï¿½n entre canciones
 
     [Header("Sound Library")]
     public List<SoundEntry> soundLibrary = new List<SoundEntry>();
@@ -52,7 +54,7 @@ public class SoundManager : MonoBehaviour
 
     private void Awake()
     {
-        // Como estamos en una arquitectura de escena única (Single-Scene), el Singleton es muy sencillo
+        // Como estamos en una arquitectura de escena ï¿½nica (Single-Scene), el Singleton es muy sencillo
         if (Instance == null)
         {
             Instance = this;
@@ -76,7 +78,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    // --- BGM (MÚSICA DE FONDO) ---
+    // --- BGM (Mï¿½SICA DE FONDO) ---
     public void PlayMainMenuBGM() => PlayBGM(mainMenuBGM);
     public void PlayGameplayBGM() => PlayBGM(gameplayBGM);
 
@@ -122,7 +124,7 @@ public class SoundManager : MonoBehaviour
     {
         if (soundDictionary.TryGetValue(type, out SoundEntry entry) && entry.clip != null)
         {
-            // Stop() interrumpe el sonido anterior (ej: recibir daño corta el sonido de salto)
+            // Stop() interrumpe el sonido anterior (ej: recibir daï¿½o corta el sonido de salto)
             sfxPlayerSource.Stop();
             sfxPlayerSource.clip = entry.clip;
             sfxPlayerSource.volume = entry.volume;
@@ -134,13 +136,13 @@ public class SoundManager : MonoBehaviour
     {
         if (soundDictionary.TryGetValue(type, out SoundEntry entry) && entry.clip != null)
         {
-            // PlayOneShot permite reproducir sonidos simultáneos sin cortarse (ej: múltiples clics en la UI)
+            // PlayOneShot permite reproducir sonidos simultï¿½neos sin cortarse (ej: mï¿½ltiples clics en la UI)
             sfxSystemSource.PlayOneShot(entry.clip, entry.volume);
         }
     }
 
-    // --- CONTROL DE VOLUMEN DESDE EL MENÚ DE CONFIGURACIÓN ---
-    // Convierte el valor lineal del Slider de UI (0.0001 a 1) a Decibelios Logarítmicos (-80 a 0)
+    // --- CONTROL DE VOLUMEN DESDE EL MENï¿½ DE CONFIGURACIï¿½N ---
+    // Convierte el valor lineal del Slider de UI (0.0001 a 1) a Decibelios Logarï¿½tmicos (-80 a 0)
     public void SetMasterVolume(float sliderValue)
     {
         float dbValue = Mathf.Log10(Mathf.Max(sliderValue, 0.0001f)) * 20f;
