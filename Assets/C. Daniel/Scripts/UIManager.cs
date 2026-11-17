@@ -9,18 +9,18 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance { get; private set; }
 
     [Header("Player Management")]
-    [Tooltip("Arrastra aquí al GameObject de tu Slime/Jugador")]
+    [Tooltip("Arrastra aqu� al GameObject de tu Slime/Jugador")]
     public GameObject playerObject;
 
     [Header("Main Menu UI")]
-    public GameObject mainMenuPanel; // El Canvas/Panel global del menú
-    [Tooltip("Cámara que apunta a la zona bonita del nivel para el menú")]
+    public GameObject mainMenuPanel; // El Canvas/Panel global del men�
+    [Tooltip("C�mara que apunta a la zona bonita del nivel para el men�")]
     public CinemachineCamera mainMenuCamera;
 
-    [Header("Sub-Menús (Contenedores)")]
-    public GameObject mainMenuButtonsContainer; // Contiene Play, Opciones, Créditos, etc.
+    [Header("Sub-Men�s (Contenedores)")]
+    public GameObject mainMenuButtonsContainer; // Contiene Play, Opciones, Cr�ditos, etc.
     public GameObject optionsContainer;         // Contiene los Sliders de audio
-    public GameObject creditsContainer;         // Contiene el texto de créditos
+    public GameObject creditsContainer;         // Contiene el texto de cr�ditos
 
     [Header("Death Screen UI")]
     public GameObject deathScreenUI;
@@ -55,6 +55,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        if (SoundManager.Instance != null) SoundManager.Instance.PlayMainMenuBGM();
         if (deathScreenUI != null) deathScreenUI.SetActive(false);
         if (pauseMenuPanel != null) pauseMenuPanel.SetActive(false);
 
@@ -65,11 +66,11 @@ public class UIManager : MonoBehaviour
             if (mainMenuCamera != null) mainMenuCamera.Priority = 20;
         }
 
-        // AÑADIDO: Apagamos al jugador mientras vemos el menú
+        // A�ADIDO: Apagamos al jugador mientras vemos el men�
         if (playerObject != null) playerObject.SetActive(false);
     }
 
-    // --- LÓGICA DE NAVEGACIÓN DEL MENÚ PRINCIPAL ---
+    // --- L�GICA DE NAVEGACI�N DEL MEN� PRINCIPAL ---
 
     public void ShowMainMenuButtons()
     {
@@ -92,13 +93,14 @@ public class UIManager : MonoBehaviour
         if (creditsContainer != null) creditsContainer.SetActive(true);
     }
 
-    // --- LÓGICA DE ESTADOS DEL JUEGO ---
+    // --- L�GICA DE ESTADOS DEL JUEGO ---
 
     public void StartGame()
     {
+        if (SoundManager.Instance != null) SoundManager.Instance.PlayGameplayBGM();
         Time.timeScale = 1f;
 
-        // AÑADIDO: Prendemos al jugador para poder controlarlo
+        // A�ADIDO: Prendemos al jugador para poder controlarlo
         if (playerObject != null) playerObject.SetActive(true);
 
         if (GameManager.Instance != null)
@@ -119,10 +121,11 @@ public class UIManager : MonoBehaviour
 
     public void LoadMainMenu()
     {
+        if (SoundManager.Instance != null) SoundManager.Instance.PlayMainMenuBGM();
         Time.timeScale = 1f;
         isPaused = false;
 
-        // AÑADIDO: Lo apagamos de nuevo al volver al menú
+        // A�ADIDO: Lo apagamos de nuevo al volver al men�
         if (playerObject != null) playerObject.SetActive(false);
 
         if (pauseMenuPanel != null) pauseMenuPanel.SetActive(false);
@@ -140,18 +143,19 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // --- LÓGICA DE VICTORIA ---
+    // --- L�GICA DE VICTORIA ---
     public void ShowWinCredits()
     {
+        if (SoundManager.Instance != null) SoundManager.Instance.PlayMainMenuBGM();
         Time.timeScale = 1f;
         isPaused = false;
 
-        // Ocultamos al jugador y otros menús
+        // Ocultamos al jugador y otros men�s
         if (playerObject != null) playerObject.SetActive(false);
         if (pauseMenuPanel != null) pauseMenuPanel.SetActive(false);
         if (deathScreenUI != null) deathScreenUI.SetActive(false);
 
-        // Encendemos el panel principal, pero forzamos a que muestre los Créditos
+        // Encendemos el panel principal, pero forzamos a que muestre los Cr�ditos
         if (mainMenuPanel != null)
         {
             if (mainMenuButtonsContainer != null) mainMenuButtonsContainer.SetActive(false);
@@ -162,22 +166,11 @@ public class UIManager : MonoBehaviour
             StartCoroutine(FadeUI(mainMenuPanel, 0f, 1f, fadeDuration));
         }
 
-        // Hacemos que Cinemachine vuelva a la cámara bonita de fondo
+        // Hacemos que Cinemachine vuelva a la c�mara bonita de fondo
         if (mainMenuCamera != null)
         {
             mainMenuCamera.Priority = 20;
         }
-    }
-
-    // --- LÓGICA DE REINICIO TOTAL ---
-    public void FinalRestartGame()
-    {
-        // 1. Aseguramos que el tiempo fluya normalmente
-        Time.timeScale = 1f;
-
-        // 2. Leemos cuál es la escena actual y la volvemos a cargar desde cero
-        Scene currentScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(currentScene.buildIndex);
     }
 
     public void QuitGame()
@@ -186,12 +179,12 @@ public class UIManager : MonoBehaviour
         Application.Quit(); // Cierra el juego al exportar la build (PC/Mac/Linux)
 
 #if UNITY_EDITOR
-        // Esta línea detiene el modo Play cuando estás probando dentro del Editor de Unity
+        // Esta l�nea detiene el modo Play cuando est�s probando dentro del Editor de Unity
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
     }
 
-    // --- LÓGICA DE MUERTE ---
+    // --- L�GICA DE MUERTE ---
 
     public void ShowDeathScreen()
     {
@@ -225,7 +218,7 @@ public class UIManager : MonoBehaviour
         if (GameManager.Instance != null) GameManager.Instance.RespawnPlayer();
     }
 
-    // --- LÓGICA DE PAUSA ---
+    // --- L�GICA DE PAUSA ---
 
     public void TogglePause()
     {
