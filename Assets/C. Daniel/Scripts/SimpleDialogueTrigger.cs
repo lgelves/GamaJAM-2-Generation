@@ -2,18 +2,18 @@ using UnityEngine;
 
 public class SimpleDialogueTrigger : MonoBehaviour
 {
-    [Header("Configuración del Diálogo")]
-    [Tooltip("Si está marcado, el diálogo solo saltará la primera vez que el jugador toque esta zona.")]
+    [Header("Configuraciï¿½n del Diï¿½logo")]
+    [Tooltip("Si estï¿½ marcado, el diï¿½logo solo saltarï¿½ la primera vez que el jugador toque esta zona.")]
     public bool triggerOnlyOnce = true;
 
-    [Tooltip("Escribe aquí las líneas de diálogo que quieres mostrar.")]
+    [Tooltip("Escribe aquï¿½ las lï¿½neas de diï¿½logo que quieres mostrar.")]
     public DialogueLine[] dialogueLines;
 
     private bool hasTriggered = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        // Si ya se activó y queremos que sea de un solo uso, lo ignoramos
+        // Si ya se activï¿½ y queremos que sea de un solo uso, lo ignoramos
         if (triggerOnlyOnce && hasTriggered) return;
 
         if (other.CompareTag("Player"))
@@ -22,17 +22,17 @@ public class SimpleDialogueTrigger : MonoBehaviour
 
             if (DialogueManager.Instance != null)
             {
-                // Llamamos al diálogo de forma simple, sin callback final
+                // Llamamos al diï¿½logo de forma simple, sin callback final
                 DialogueManager.Instance.StartDialogue(dialogueLines);
             }
             else
             {
-                Debug.LogWarning("No se encontró el DialogueManager en la escena.");
+                Debug.LogWarning("No se encontrï¿½ el DialogueManager en la escena.");
             }
         }
     }
 
-    // Opcional: Útil por si quieres que el diálogo vuelva a estar disponible al reiniciar nivel
+    // Opcional: ï¿½til por si quieres que el diï¿½logo vuelva a estar disponible al reiniciar nivel
     public void ResetTrigger()
     {
         hasTriggered = false;

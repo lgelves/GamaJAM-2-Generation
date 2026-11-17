@@ -18,8 +18,13 @@ public enum SoundType
     PlayerHurt,
     // Enemigos
     ChaserAlert,
-    // Coleccionables - Luis G
-    Collectible
+    // Coleccionables -- Luis G
+    Collectible,
+    // Dialogos -- Luis G
+    DialogueTick,
+    // Manzanas -- Luis G
+    AppleLaunch
+
 }
 
 // 2. Estructura para poder arrastrar los audios en el Inspector de Unity
@@ -82,37 +87,45 @@ public class SoundManager : MonoBehaviour
     public void PlayMainMenuBGM() => PlayBGM(mainMenuBGM);
     public void PlayGameplayBGM() => PlayBGM(gameplayBGM);
 
+    private Coroutine bgmFade;
+
     private void PlayBGM(AudioClip clip)
     {
         if (clip == null) return;
         if (bgmSource.clip == clip && bgmSource.isPlaying) return; // Evita reiniciar si ya suena la misma
 
-        StartCoroutine(FadeBGM(clip));
+        if (bgmFade != null) StopCoroutine(bgmFade);
+        bgmFade = StartCoroutine(FadeBGM(clip));
     }
 
     private IEnumerator FadeBGM(AudioClip newClip)
     {
-        // 1. Fade Out (Bajar volumen suavemente)
-        float time = 0;
-        float startVol = bgmSource.volume;
+        float time = 0f;
 
-        while (time < fadeDuration)
+        // 1. Fade Out (solo si ya estaba sonando algo)
+        if (bgmSource.isPlaying)
         {
-            time += Time.deltaTime;
-            bgmSource.volume = Mathf.Lerp(startVol, 0f, time / fadeDuration);
-            yield return null;
+            float startVol = bgmSource.volume;
+            while (time < fadeDuration)
+            {
+                time += Time.unscaledDeltaTime; // unscaled: funciona aunque el juego este en pausa
+                bgmSource.volume = Mathf.Lerp(startVol, 0f, time / fadeDuration);
+                yield return null;
+            }
         }
 
         // 2. Cambiar pista
         bgmSource.Stop();
         bgmSource.clip = newClip;
+        bgmSource.loop = true;
+        bgmSource.volume = 0f;
         bgmSource.Play();
 
-        // 3. Fade In (Subir volumen suavemente)
-        time = 0;
+        // 3. Fade In
+        time = 0f;
         while (time < fadeDuration)
         {
-            time += Time.deltaTime;
+            time += Time.unscaledDeltaTime;
             bgmSource.volume = Mathf.Lerp(0f, 1f, time / fadeDuration);
             yield return null;
         }

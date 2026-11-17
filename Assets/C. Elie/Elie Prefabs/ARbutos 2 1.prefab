@@ -1,0 +1,285 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5333814101876320299
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3943955164093344666}
+  m_Layer: 0
+  m_Name: ARbutos 2 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3943955164093344666
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5333814101876320299}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.70710677, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 3.4, y: 0.635, z: -33.76}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4440675294042814464}
+  - {fileID: 3032556723537195062}
+  - {fileID: 5764209678376284821}
+  - {fileID: 2837495380904244037}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!1001 &631579962221595350
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3943955164093344666}
+    m_Modifications:
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.70039475
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.05799997
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0917511
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6213956341524139402, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_Name
+      value: Arbusto Quad 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+--- !u!4 &4440675294042814464 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+  m_PrefabInstance: {fileID: 631579962221595350}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1298003180610945427
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3943955164093344666}
+    m_Modifications:
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6213956341524139402, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+      propertyPath: m_Name
+      value: Arbusto Quad 2 (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+--- !u!4 &2837495380904244037 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3847094462509445846, guid: b2dcf6e8a861ec54d8171b86b57d3df2, type: 3}
+  m_PrefabInstance: {fileID: 1298003180610945427}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2662958007671598016
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3943955164093344666}
+    m_Modifications:
+    - target: {fileID: 5552945136075688237, guid: 421a120cd750b634b9b109a9dc5e4981, type: 3}
+      propertyPath: m_Name
+      value: Arbusto 3 quad
+      objectReference: {fileID: 0}
+    - target: {fileID: 7713025807935904085, guid: 421a120cd750b634b9b109a9dc5e4981, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.35960522
+      objectReference: {fileID: 0}
+    - target: {fileID: 7713025807935904085, guid: 421a120cd750b634b9b109a9dc5e4981, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.134
+      objectReference: {fileID: 0}
+    - target: {fileID: 7713025807935904085, guid: 421a120cd750b634b9b109a9dc5e4981, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.09674835
+      objectReference: {fileID: 0}
+    - target: {fileID: 7713025807935904085, guid: 421a120cd750b634b9b109a9dc5e4981, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7713025807935904085, guid: 421a120cd750b634b9b109a9dc5e4981, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7713025807935904085, guid: 421a120cd750b634b9b109a9dc5e4981, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7713025807935904085, guid: 421a120cd750b634b9b109a9dc5e4981, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7713025807935904085, guid: 421a120cd750b634b9b109a9dc5e4981, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7713025807935904085, guid: 421a120cd750b634b9b109a9dc5e4981, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7713025807935904085, guid: 421a120cd750b634b9b109a9dc5e4981, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 421a120cd750b634b9b109a9dc5e4981, type: 3}
+--- !u!4 &5764209678376284821 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7713025807935904085, guid: 421a120cd750b634b9b109a9dc5e4981, type: 3}
+  m_PrefabInstance: {fileID: 2662958007671598016}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3786045768565272607
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3943955164093344666}
+    m_Modifications:
+    - target: {fileID: 2206608601204391977, guid: d6555bda36365a8458c66db9d6467bef, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.25439477
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206608601204391977, guid: d6555bda36365a8458c66db9d6467bef, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.116
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206608601204391977, guid: d6555bda36365a8458c66db9d6467bef, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.07374954
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206608601204391977, guid: d6555bda36365a8458c66db9d6467bef, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206608601204391977, guid: d6555bda36365a8458c66db9d6467bef, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206608601204391977, guid: d6555bda36365a8458c66db9d6467bef, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206608601204391977, guid: d6555bda36365a8458c66db9d6467bef, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206608601204391977, guid: d6555bda36365a8458c66db9d6467bef, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206608601204391977, guid: d6555bda36365a8458c66db9d6467bef, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206608601204391977, guid: d6555bda36365a8458c66db9d6467bef, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8044158973668650060, guid: d6555bda36365a8458c66db9d6467bef, type: 3}
+      propertyPath: m_Name
+      value: Arbusto 4 Quad
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d6555bda36365a8458c66db9d6467bef, type: 3}
+--- !u!4 &3032556723537195062 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2206608601204391977, guid: d6555bda36365a8458c66db9d6467bef, type: 3}
+  m_PrefabInstance: {fileID: 3786045768565272607}
+  m_PrefabAsset: {fileID: 0}

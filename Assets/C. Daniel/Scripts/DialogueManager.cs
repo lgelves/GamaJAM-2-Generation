@@ -29,6 +29,18 @@ public struct SpeakerPortrait
     public GameObject portraitObject;
 }
 
+// Voz de cada personaje: su sonido, volumen, tono y cada cuantas letras suena
+[System.Serializable]
+public class SpeakerVoice
+{
+    public SpeakerType speaker;
+    public AudioClip clip;
+    [Range(0f, 1f)] public float volume = 1f;
+    [Range(0.5f, 2f)] public float pitch = 1f;          // Agudo (>1) o grave (<1)
+    [Range(0f, 0.5f)] public float pitchVariation = 0.05f; // Variacion aleatoria para que no suene robotico
+    [Min(1)] public int letterInterval = 2;             // Suena cada N letras
+}
+
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; }
@@ -38,13 +50,20 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI dialogueText;
 
     [Header("Portraits Configuration")]
-    [Tooltip("Añade aquí a los personajes y arrastra su GameObject de imagen correspondiente")]
+    [Tooltip("Aï¿½ade aquï¿½ a los personajes y arrastra su GameObject de imagen correspondiente")]
     public List<SpeakerPortrait> speakerPortraitsList = new List<SpeakerPortrait>();
     private Dictionary<SpeakerType, GameObject> portraitDictionary;
 
     [Header("Settings")]
     public float typingSpeed = 0.05f;
     public InputAction continueAction;
+
+    [Header("Voces por personaje")]
+    [Tooltip("AudioSource propio del dialogo. Su Output debe ser el grupo SFX del Mixer")]
+    public AudioSource voiceSource;
+    public List<SpeakerVoice> speakerVoices = new List<SpeakerVoice>();
+    private Dictionary<SpeakerType, SpeakerVoice> voiceDictionary;
+    private SpeakerType currentSpeaker = SpeakerType.None;
 
     private Queue<DialogueLine> linesQueue = new Queue<DialogueLine>();
     private bool isTyping = false;
@@ -62,6 +81,14 @@ public class DialogueManager : MonoBehaviour
         }
         Instance = this;
 
+        // Diccionario de voces
+        voiceDictionary = new Dictionary<SpeakerType, SpeakerVoice>();
+        foreach (var v in speakerVoices)
+        {
+            if (v != null && !voiceDictionary.ContainsKey(v.speaker))
+                voiceDictionary.Add(v.speaker, v);
+        }
+
         // 2. Inicializamos el diccionario de retratos
         portraitDictionary = new Dictionary<SpeakerType, GameObject>();
         foreach (var sp in speakerPortraitsList)
@@ -69,7 +96,7 @@ public class DialogueManager : MonoBehaviour
             if (!portraitDictionary.ContainsKey(sp.speaker))
             {
                 portraitDictionary.Add(sp.speaker, sp.portraitObject);
-                // Aseguramos que todas las imágenes empiecen apagadas
+                // Aseguramos que todas las imï¿½genes empiecen apagadas
                 if (sp.portraitObject != null) sp.portraitObject.SetActive(false);
             }
         }
@@ -120,8 +147,9 @@ public class DialogueManager : MonoBehaviour
         }
 
         DialogueLine nextLine = linesQueue.Dequeue();
+        currentSpeaker = nextLine.speaker;
 
-        // 3. Apagamos todas las imágenes primero
+        // 3. Apagamos todas las imï¿½genes primero
         foreach (var kvp in portraitDictionary)
         {
             if (kvp.Value != null) kvp.Value.SetActive(false);
@@ -142,12 +170,22 @@ public class DialogueManager : MonoBehaviour
         isTyping = true;
         dialogueText.text = "";
 
+        // Buscamos la voz del personaje que habla (null si no tiene)
+        voiceDictionary.TryGetValue(currentSpeaker, out SpeakerVoice voice);
+        int letterCount = 0;
+
         foreach (char letter in sentence.ToCharArray())
         {
             dialogueText.text += letter;
+            letterCount++;
 
-            if (SoundManager.Instance != null && dialogueText.text.Length % 2 == 0)
-                SoundManager.Instance.PlaySystemSFX(SoundType.UIHover);
+            if (voice != null && voice.clip != null && voiceSource != null
+                && !char.IsWhiteSpace(letter)
+                && letterCount % voice.letterInterval == 0)
+            {
+                voiceSource.pitch = voice.pitch + Random.Range(-voice.pitchVariation, voice.pitchVariation);
+                voiceSource.PlayOneShot(voice.clip, voice.volume);
+            }
 
             yield return new WaitForSecondsRealtime(typingSpeed);
         }
@@ -176,7 +214,7 @@ public class DialogueManager : MonoBehaviour
         IsDialogueActive = false;
         dialogueContainer.SetActive(false);
 
-        // Apagamos los retratos al cerrar el diálogo
+        // Apagamos los retratos al cerrar el diï¿½logo
         foreach (var kvp in portraitDictionary)
         {
             if (kvp.Value != null) kvp.Value.SetActive(false);
