@@ -262,10 +262,9 @@ MonoBehaviour:
   launchPoint: {fileID: 6550239678568008977}
   launchSpeed: 9
   upwardBoost: 3
-  upwardSpread: 1.5
   fireRate: 0.12
+  autoAimRange: 15
   unlockedAtStart: 1
-  launchPrompt: {fileID: 0}
 --- !u!1 &3379589093592969506
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,7 +290,7 @@ Transform:
   m_GameObject: {fileID: 3379589093592969506}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.127, y: -0.258, z: 0.491}
+  m_LocalPosition: {x: 0.088, y: 0.48, z: 2.789}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -1,19 +1,24 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections; // Necesario para las corrutinas
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(DeathTrigger))]
-public class ChaserEnemy : MonoBehaviour
+public class ChaserEnemy : MonoBehaviour, IAppleTarget // <-- AÃ‘ADIDO: IAppleTarget
 {
     [Header("Chaser Settings")]
     public Transform playerTarget;
     public float moveSpeed = 4f;
 
+    [Header("Stun Settings")]
+    [Tooltip("Segundos que se queda quieto al recibir una manzana")]
+    public float stunDuration = 2f;
+    private bool isStunned = false; // <-- AÃ‘ADIDO: Control de aturdimiento
+
     private NavMeshAgent agent;
     private Vector3 initialPosition;
-    private bool initialActiveState; // Recuerda si empezó apagado o prendido
+    private bool initialActiveState;
     private bool isIn2D = true;
-
     private bool isInitialized = false;
 
     private void Awake()
@@ -25,10 +30,8 @@ public class ChaserEnemy : MonoBehaviour
     {
         if (isInitialized) return;
 
-        // Guardamos su posición y estado ANTES de que el GameManager lo mueva accidentalmente
         initialPosition = transform.position;
         initialActiveState = gameObject.activeSelf;
-
         agent = GetComponent<NavMeshAgent>();
         if (agent != null) agent.speed = moveSpeed;
 
@@ -40,20 +43,12 @@ public class ChaserEnemy : MonoBehaviour
         PerspectiveController.OnPerspectiveChanged += HandlePerspectiveChange;
 
         PerspectiveController pc = Object.FindFirstObjectByType<PerspectiveController>();
-        if (pc != null)
-        {
-            isIn2D = pc.IsIn2DView;
-        }
+        if (pc != null) isIn2D = pc.IsIn2DView;
     }
 
     private void OnDisable()
     {
         PerspectiveController.OnPerspectiveChanged -= HandlePerspectiveChange;
-    }
-
-    private void Start()
-    {
-        // Ya no usamos Start para esto. Todo se asegura en InitializeSetup.
     }
 
     private void HandlePerspectiveChange(bool is2DView)
@@ -63,10 +58,8 @@ public class ChaserEnemy : MonoBehaviour
 
     public void ResetChaser()
     {
-        // 1. Nos aseguramos de que haya guardado su posición original por si estaba apagado
         InitializeSetup();
 
-        // 2. Lo movemos a su posición de origen
         if (agent != null && agent.isOnNavMesh)
         {
             agent.isStopped = true;
@@ -77,23 +70,25 @@ public class ChaserEnemy : MonoBehaviour
             transform.position = initialPosition;
         }
 
-        // 3. NUEVO: Si el Chaser empezó oculto para el Trigger, lo volvemos a ocultar 
-        // para que el jugador pueda volver a activar el Trigger al morir.
         if (gameObject.activeSelf != initialActiveState)
         {
             gameObject.SetActive(initialActiveState);
         }
+
+        isStunned = false; // <-- AÃ‘ADIDO: Quitar aturdimiento al resetear
     }
 
     public void UpdateResetPosition()
     {
         initialPosition = transform.position;
-        // Si el jugador tocó un checkpoint, asumimos que el estado base del chaser ahora es estar activo
         initialActiveState = true;
     }
 
     private void Update()
     {
+        // <-- AÃ‘ADIDO: Si estÃ¡ aturdido, abortamos el Update y no se mueve
+        if (isStunned) return;
+
         bool isMainMenuActive = UIManager.Instance != null &&
                                 UIManager.Instance.mainMenuPanel != null &&
                                 UIManager.Instance.mainMenuPanel.activeSelf;
@@ -128,5 +123,26 @@ public class ChaserEnemy : MonoBehaviour
             agent.isStopped = true;
             agent.velocity = Vector3.zero;
         }
+    }
+
+    // --- AÃ‘ADIDO: LÃ³gica de la manzana (IAppleTarget) ---
+    public void OnAppleHit()
+    {
+        if (!isStunned && gameObject.activeInHierarchy)
+        {
+            StartCoroutine(StunCoroutine());
+        }
+    }
+
+    private IEnumerator StunCoroutine()
+    {
+        isStunned = true;
+        StopAgent(); // Frena en seco
+
+        // (Opcional) Si quieres que se ponga rojo, podrÃ­as cambiar el color de su material aquÃ­
+
+        yield return new WaitForSeconds(stunDuration);
+
+        isStunned = false;
     }
 }
